@@ -17,7 +17,6 @@ import (
 	"context"
 	dbsql "database/sql"
 	"encoding/json"
-	"github.com/godror/godror"
 	"sync"
 	"time"
 
@@ -76,7 +75,7 @@ func newOracle(cfg *Config) (CheckPoint, error) {
 	sql := genCheckTableIsExist2o(sp)
 
 	var tableName string
-	err = db.QueryRow(sql, godror.FetchArraySize(1)).Scan(&tableName)
+	err = db.QueryRow(sql).Scan(&tableName)
 	switch {
 	case err == dbsql.ErrNoRows:
 		sql = genCreateTable2o(sp)
