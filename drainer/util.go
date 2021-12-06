@@ -294,17 +294,15 @@ func genRouterAndBinlogEvent(cfg *SyncerConfig) (*router.Table, *bf.BinlogEvent,
 	// if err != nil {
 	// 	return errors.Annotate(err, "generate block allow list error")
 	// }
-	if len(routeRules) > 0 && cfg.DestDBType == "oracle" {
+	if cfg.DestDBType == "oracle" {
 		tableRouter, err = router.NewTableRouter(cfg.CaseSensitive, routeRules)
 		if err != nil {
 			return nil, nil, errors.Annotate(err, "generate table router error")
 		}
 	}
-	if len(filterRules) > 0 {
-		binlogFilter, err = bf.NewBinlogEvent(cfg.CaseSensitive, filterRules)
-		if err != nil {
-			return nil, nil, errors.Annotate(err, "generate binlog event filter error")
-		}
+	binlogFilter, err = bf.NewBinlogEvent(cfg.CaseSensitive, filterRules)
+	if err != nil {
+		return nil, nil, errors.Annotate(err, "generate binlog event filter error")
 	}
 	return tableRouter, binlogFilter, nil
 }
