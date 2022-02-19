@@ -279,7 +279,7 @@ func formatData(data types.Datum, ft types.FieldType) (types.Datum, error) {
 		//only for oracle db
 		if destDBType == "oracle" {
 			stype := types.TypeToStr(ft.Tp, ft.Charset)
-			if stype == "blob" {
+			if stype == "blob" || stype == "tinyblob" || stype == "mediumblob" || stype == "longblob" {
 				data = types.NewBytesDatum(data.GetBytes())
 			}
 		}
