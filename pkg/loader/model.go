@@ -247,7 +247,7 @@ func (dml *DML) buildOracleWhere(builder *strings.Builder) {
 		if i > 0 {
 			builder.WriteString(" AND ")
 		}
-		if colValues[i] == nil {
+		if colValues[i] == nil || colValues[i] == "" {
 			builder.WriteString(escapeName(colNames[i]) + " IS NULL")
 		} else {
 			builder.WriteString(fmt.Sprintf("%s = %s", escapeName(colNames[i]), genOracleValue(dml.UpColumnsInfoMap[colNames[i]], colValues[i])))
@@ -347,7 +347,7 @@ func (dml *DML) oracleDeleteNewValueSQL() (sql string) {
 		if i > 0 {
 			builder.WriteString(" AND ")
 		}
-		if colValues[i] == nil {
+		if colValues[i] == nil || colValues[i] == "" {
 			builder.WriteString(escapeName(colNames[i]) + " IS NULL")
 		} else {
 			builder.WriteString(fmt.Sprintf("%s = %s", colNames[i], genOracleValue(dml.UpColumnsInfoMap[colNames[i]], colValues[i])))
