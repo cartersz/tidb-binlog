@@ -500,7 +500,7 @@ func getKeys(dml *DML) (keys []string) {
 }
 
 func genOracleValue(column *model.ColumnInfo, value interface{}) string {
-	if value == nil {
+	if value == nil || value == "" {
 		return "NULL"
 	}
 	switch column.Tp {
