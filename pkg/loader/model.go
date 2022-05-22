@@ -500,7 +500,7 @@ func getKeys(dml *DML) (keys []string) {
 }
 
 func genOracleValue(column *model.ColumnInfo, value interface{}) string {
-	if value == nil || value == "" {
+	if value == nil {
 		return "NULL"
 	}
 	switch column.Tp {
@@ -512,6 +512,9 @@ func genOracleValue(column *model.ColumnInfo, value interface{}) string {
 		}
 		return fmt.Sprintf("TO_TIMESTAMP('%v', 'yyyy-mm-dd hh24:mi:ss.ff%d')", value, column.Decimal)
 	case mysql.TypeTimestamp:
+		if column.Decimal == 0 {
+			return fmt.Sprintf("TO_TIMESTAMP('%v', 'yyyy-mm-dd hh24:mi:ss')", value)
+		}
 		return fmt.Sprintf("TO_TIMESTAMP('%s', 'yyyy-mm-dd hh24:mi:ss.ff%d')", value, column.Decimal)
 	case mysql.TypeDuration:
 		return fmt.Sprintf("TO_DATE('%s', 'hh24:mi:ss')", value)
